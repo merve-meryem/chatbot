@@ -15,6 +15,7 @@ function App() {
 
   async function handleChat(e) {
     e.preventDefault();
+    if (!userInput.trim()) return;
     setLoading(true);
 
     const userMessage = { role: "user", text: userInput };
@@ -25,9 +26,9 @@ function App() {
 ANSWER IN MARKDOWN FORMAT ONLY.
 
 FORMAT (FOLLOW EXACTLY):
-1. First item
-2. Second item
-3. Third item
+1.First item
+2.Second item
+3.Third item
 
 RULES:
 - Use numbered list (1., 2., 3.)
@@ -52,15 +53,17 @@ ${userInput}
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-60 p-4 border border-blue-700 rounded-lg ">
-      <h1 className=" text-2xl font-bold">Chatbot</h1>
+    <div className="max-w-xl mx-auto mt-60 p-4 bg-gradient-to-b from-blue-100 to-green-200 rounded-lg ">
+      <h1 className=" text-3xl font-bold text-blue-800 flex justify-center">
+        CHATBOT
+      </h1>
 
       {history.map((msg, i) =>
         msg.role === "user" ? (
           <User key={i} text={msg.text} />
         ) : (
           <Chatbot key={i} text={msg.text} />
-        )
+        ),
       )}
 
       <form onSubmit={handleChat}>
@@ -71,9 +74,11 @@ ${userInput}
         />
         <button
           className={`m-auto mt-4 flex bg-blue-500 text-white px-2 w-37.5 rounded h-11.5 items-center justify-center ${
-            loading ? "pointer-events-none opacity-50" : "pointer-events-auto"
+            loading || !userInput.trim()
+              ? "pointer-events-none opacity-50"
+              : "pointer-events-auto"
           }`}
-          disabled={loading}
+          disabled={loading || !userInput.trim()}
           type="submit"
         >
           {loading ? (
